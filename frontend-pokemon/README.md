@@ -37,33 +37,6 @@ npm install react-router-dom
 npm install react-icons
 ```
 
-## 📁 Estrutura de Pastas
-
-```
-src/
-├── components/     # Componentes reutilizáveis
-│   ├── PokemonCard/
-│   │   ├── index.tsx
-│   │   └── styles.module.css
-│   ├── PokemonForm/
-│   │   ├── index.tsx
-│   │   └── styles.module.css
-│   └── PokemonList/
-│       ├── index.tsx
-│       └── styles.module.css
-├── pages/         # Páginas da aplicação
-│   ├── Home/
-│   │   ├── index.tsx
-│   │   └── styles.module.css
-│   └── PokemonDetails/
-│       ├── index.tsx
-│       └── styles.module.css
-├── services/      # Serviços e chamadas à API
-├── types/         # Definições de tipos TypeScript
-├── hooks/         # Custom hooks
-└── utils/         # Funções utilitárias
-```
-
 ## 🎯 Funcionalidades Implementadas
 
 1. **Lista de Pokémons**

@@ -1,8 +1,10 @@
 import axios from 'axios';
 import type { Pokemon, PokemonFormData } from '../types/pokemon';
 
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:8088';
+
 const api = axios.create({
-  baseURL: 'http://localhost:8088',
+  baseURL: API_URL,
 });
 
 export const getPokemons = async (): Promise<Pokemon[]> => {

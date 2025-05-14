@@ -18,7 +18,8 @@ export function Home() {
       setPokemons(data);
       setError(null);
     } catch (err) {
-      setError('Erro ao carregar Pokémons');
+      const errorMessage = err instanceof Error ? err.message : 'Erro ao carregar Pokémons';
+      setError(errorMessage);
       console.error(err);
     } finally {
       setLoading(false);
@@ -35,7 +36,8 @@ export function Home() {
       setShowForm(false);
       loadPokemons();
     } catch (err) {
-      setError('Erro ao criar Pokémon');
+      const errorMessage = err instanceof Error ? err.message : 'Erro ao criar Pokémon';
+      setError(errorMessage);
       console.error(err);
     }
   };

@@ -19,6 +19,7 @@
     "db:seed": "sequelize db:seed:all"
   },
   "devDependencies": {
-    "@types/express": "^5.0.1"
+    "@types/express": "^5.0.1",
+    "@types/node": "^22.15.18"
   }
 }
