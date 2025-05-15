@@ -13,10 +13,10 @@
     "ts-node": "^10.9.2"
   },
   "scripts": {
-    "start": "nodemon dist/app.js",
+    "start": "node dist/app.js",
     "build": "tsc",
-    "db:migrate": "npx sequelize db:migrate",
-    "db:seed": "sequelize db:seed:all"
+    "db:migrate": "npm run build && npx sequelize-cli db:migrate",
+    "db:seed":    "npm run build && npx sequelize-cli db:seed:all"
   },
   "devDependencies": {
     "@types/express": "^5.0.1",
