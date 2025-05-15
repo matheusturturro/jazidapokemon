@@ -1,5 +1,5 @@
 import { useState, FormEvent, ChangeEvent } from 'react';
-import type { PokemonFormData } from '../../types/pokemon';
+import type { PokemonFormData } from '@/types/pokemon';
 import styles from './styles.module.css';
 
 interface PokemonFormProps {

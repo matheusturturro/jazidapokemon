@@ -2,6 +2,7 @@
 
 interface ImportMetaEnv {
   readonly VITE_API_URL: string | undefined;
+  readonly DEV: boolean;
 }
 
 interface ImportMeta {

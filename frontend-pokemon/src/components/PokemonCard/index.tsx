@@ -1,5 +1,5 @@
 import { useNavigate } from 'react-router-dom';
-import type { Pokemon } from '../../types/pokemon';
+import type { Pokemon } from '@/types/pokemon';
 import styles from './styles.module.css';
 
 interface PokemonCardProps {

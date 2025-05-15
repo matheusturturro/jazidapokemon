@@ -1,5 +1,7 @@
-import { QueryInterface, DataTypes } from "sequelize" 
-module.exports = {
+import type { QueryInterface } from "sequelize";
+import { DataTypes } from "sequelize";
+
+const migration = {
   up: (queryInterface: QueryInterface) => {
     return queryInterface.createTable('Pokemons', {
       id: {
@@ -35,3 +37,5 @@ module.exports = {
     return queryInterface.dropTable('Pokemons');
   }
 };
+
+export default migration;

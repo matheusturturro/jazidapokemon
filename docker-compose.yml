@@ -4,12 +4,54 @@ services:
     image: postgres:15
     restart: always
     environment:
-      POSTGRES_DB: pokemondb
+      POSTGRES_DB: jazidapokemon
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
     ports:
       - '5432:5432'
     volumes:
       - pgdata:/var/lib/postgresql/data
+    networks:
+      - pokemon-network
+
+  backend:
+    build:
+      context: ./backend-pokemon
+      dockerfile: Dockerfile
+    restart: always
+    depends_on:
+      - db
+    ports:
+      - '8088:8088'
+    environment:
+      - PORT=8088
+      - DB_HOST=db
+      - DB_PORT=5432
+      - DB_NAME=jazidapokemon
+      - DB_USER=postgres
+      - DB_PASSWORD=postgres
+      - NODE_ENV=development
+      - FRONTEND_URL=http://localhost:5173
+    networks:
+      - pokemon-network
+
+  frontend:
+    build:
+      context: ./frontend-pokemon
+      dockerfile: Dockerfile
+    restart: always
+    depends_on:
+      - backend
+    ports:
+      - '5173:5173'
+    environment:
+      - VITE_API_URL=http://localhost:8088
+    networks:
+      - pokemon-network
+
 volumes:
   pgdata:
+
+networks:
+  pokemon-network:
+    driver: bridge 

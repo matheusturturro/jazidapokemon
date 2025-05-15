@@ -14,8 +14,8 @@ export const battlePokemons = async (req: Request, res: Response) => {
     }
     
     try {
-      const pokemonA = await Pokemon.findByPk(pokemonAId);
-      const pokemonB = await Pokemon.findByPk(pokemonBId);
+      const pokemonA = await (Pokemon as any).findByPk(pokemonAId);
+      const pokemonB = await (Pokemon as any).findByPk(pokemonBId);
     
       if (!pokemonA || !pokemonB) {
         return res.status(404).json({ erro: 'Um ou ambos os pokémons não foram encontrados' });
@@ -35,23 +35,28 @@ export const battlePokemons = async (req: Request, res: Response) => {
       }
     
       vencedor.nivel += 1;
-      perdedor.nivel -= 1;
-    
       await vencedor.save();
-    
-      let perdedorData = perdedor.toJSON();
-      if (perdedor.nivel <= 0) {
+      
+      if (perdedor.nivel <= 1) {
+        const perdedorData = perdedor.toJSON();
         perdedorData.nivel = 0;
         await perdedor.destroy();
+        
+        return res.status(200).json({
+          message: "Batalha realizada com sucesso. O Pokémon perdedor foi derrotado!",
+          vencedor: vencedor,
+          perdedor: perdedorData
+        });
       } else {
+        perdedor.nivel -= 1;
         await perdedor.save();
+        
+        return res.status(200).json({
+          message: "Batalha realizada com sucesso",
+          vencedor: vencedor,
+          perdedor: perdedor
+        });
       }
-    
-      return res.status(200).json({
-        message: "Batalha realizada com sucesso",
-        vencedor: vencedor,
-        perdedor: perdedorData
-      });
     } catch (error) {
       console.error('Erro ao processar batalha:', error);
       return res.status(500).json({ erro: 'Erro interno do servidor' });

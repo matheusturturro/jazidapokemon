@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { PokemonForm } from '../../components/PokemonForm';
-import type { Pokemon, PokemonFormData } from '../../types/pokemon';
-import { getPokemonById, updatePokemon, deletePokemon } from '../../services/api';
+import { PokemonForm } from '@/components/PokemonForm';
+import type { Pokemon, PokemonFormData } from '@/types/pokemon';
+import { getPokemonById, updatePokemon, deletePokemon } from '@/services/api';
 import styles from './styles.module.css';
 
 export function PokemonDetails() {
@@ -13,36 +13,57 @@ export function PokemonDetails() {
   const [error, setError] = useState<string | null>(null);
   const [isEditing, setIsEditing] = useState(false);
 
-  const loadPokemon = async () => {
-    if (!id) return;
-    
-    try {
-      setLoading(true);
-      const data = await getPokemonById(parseInt(id));
-      setPokemon(data);
-      setError(null);
-    } catch (err) {
-      setError('Erro ao carregar Pokémon');
-      console.error(err);
-    } finally {
-      setLoading(false);
-    }
-  };
-
   useEffect(() => {
+    let isMounted = true;
+
+    const loadPokemon = async () => {
+      if (!id) return;
+      
+      try {
+        setLoading(true);
+        const data = await getPokemonById(parseInt(id));
+        
+        if (isMounted) {
+          setPokemon(data);
+          setError(null);
+        }
+      } catch (err) {
+        if (isMounted) {
+          setError('Erro ao carregar Pokémon');
+          console.error(err);
+        }
+      } finally {
+        if (isMounted) {
+          setLoading(false);
+        }
+      }
+    };
+
     loadPokemon();
+
+    // Função de cleanup
+    return () => {
+      isMounted = false;
+    };
   }, [id]);
 
   const handleUpdatePokemon = async (data: PokemonFormData) => {
     if (!id) return;
 
     try {
+      setLoading(true);
       await updatePokemon(parseInt(id), data.treinador);
       setIsEditing(false);
-      loadPokemon();
+      
+      // Recarregar o pokemon após atualização
+      const updatedPokemon = await getPokemonById(parseInt(id));
+      setPokemon(updatedPokemon);
+      setError(null);
     } catch (err) {
       setError('Erro ao atualizar Pokémon');
       console.error(err);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -54,11 +75,13 @@ export function PokemonDetails() {
     }
 
     try {
+      setLoading(true);
       await deletePokemon(parseInt(id));
       navigate('/');
     } catch (err) {
       setError('Erro ao excluir Pokémon');
       console.error(err);
+      setLoading(false);
     }
   };
 
